@@ -1,0 +1,10 @@
+body {
+    background: url(Background.jpg) no-repeat center fixed;
+    margin: 0 auto;
+    background-size: 100% 100%;
+}
+
+#test {
+    padding-left: 50%;
+    padding-bottom: 50%;
+}
