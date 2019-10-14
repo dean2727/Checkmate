@@ -1,10 +1,46 @@
 body {
-    background: url(Background.jpg) no-repeat center fixed;
+    background: url(images/Background.jpg) no-repeat center fixed;
     margin: 0 auto;
     background-size: 100% 100%;
 }
 
-#test {
-    padding-left: 50%;
-    padding-bottom: 50%;
+#board {
+    width: 1280px;
+    height: 500px;
+    margin-top: 70px;
+}
+
+.chessboard {
+    width: 520px;
+    height: 520px;
+    margin: auto;
+}
+
+.realboard {
+    border: 11px solid rgb(1, 1, 1);
+    width: 520px;
+    height: 520px;
+    margin: auto;
+}
+
+.row {
+    width: 520px;
+    height: 65px;
+}
+
+.square {
+    width: 65px;
+    height: 65px;
+}
+
+.row8, .row7, .row6, .row5, .row4, .row3, .row2, .row1 {
+    float: left;
+}
+
+.light {
+    background-color: rgb(255, 255, 255);
+}
+
+.dark {
+    background-color: rgb(124, 0, 0);
 }
