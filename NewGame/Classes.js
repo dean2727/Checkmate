@@ -32,7 +32,7 @@
     Queens: No restriction in distance for movement
             Moves any direction
 
-    Winner is declared if he got the other's king
+    Winner is declared if he puts opponents king in checkmate (no way out of being captured)
 */
 
 class Pawn {
@@ -63,7 +63,7 @@ class Bishop {
         }
 
         move() {
-
+                
         }
 
 }

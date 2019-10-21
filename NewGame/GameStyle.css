@@ -1,5 +1,5 @@
 body {
-    background: url(images/Background.jpg) no-repeat center fixed;
+    background: url(images/Background.png) no-repeat center fixed;
     margin: 0 auto;
     background-size: 100% 100%;
 }
@@ -31,16 +31,17 @@ body {
 .square {
     width: 65px;
     height: 65px;
+    justify-content: center;
 }
 
-.row8, .row7, .row6, .row5, .row4, .row3, .row2, .row1 {
-    float: left;
-}
+.row8, .row7, .row6, .row5, .row4, .row3, .row2, .row1 { float: left; }
 
-.light {
-    background-color: rgb(255, 255, 255);
-}
+.light { background-color: rgb(255, 255, 255) }
 
-.dark {
-    background-color: rgb(124, 0, 0);
+.dark { background-color: rgb(124, 0, 0); }
+
+.piece {
+    width: 65px;
+    height: 65px;
+    object-fit: fill;
 }
