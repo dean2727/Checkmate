@@ -81,6 +81,12 @@ var r1rook2 = document.getElementById("1rook2");
 var pieceSelected = false;
 var piecePlaced = false;
 var possibleSquares = [];
+var imageToMoveId;
+var imageToMove;
+var imageToMoveSrc;
+var pieceId;
+var currentDivId;
+const LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 // Prompt user to new game
 
@@ -93,14 +99,14 @@ Top and bottom sides are labeled a-h
 Left and right sides are numbered 1-8 from the bottom up
 */
 function possibleSquaresPawnMove1(currentSquare, squares) {
-
+    console.log("in function and currentSquare is " + currentSquare);
     // If the pawn is on the left side
     if (currentSquare[0] == "a") {
-        console.log(currentSquare);
+
         // Just check top right adjacent square for enemy piece
         var enemySquare1Id = "b3";
         var enemySquare1 = document.getElementById(enemySquare1Id);
-        if (enemySquare1 != null) {
+        if (enemySquare1.children.length != 0) {  // If the div has a child
             if (enemySquare1.id[0] == "7" || enemySquare1.id[0] == "8") {
                 squares.push(enemySquare1Id);
             }
@@ -108,11 +114,11 @@ function possibleSquaresPawnMove1(currentSquare, squares) {
     }
     
     // If the pawn is on the right side
-    if (currentSquare[0] == "h") {
+    else if (currentSquare[0] == "h") {
         // Just check top right adjacent square for enemy piece
         var enemySquare1Id = "g3";
         var enemySquare1 = document.getElementById(enemySquare1Id);
-        if (enemySquare1 != null) {
+        if (enemySquare1.children.length != 0) {
             if (enemySquare1.id[0] == "7" || enemySquare1.id[0] == "8") {
                 squares.push(enemySquare1Id);
             }
@@ -121,16 +127,22 @@ function possibleSquaresPawnMove1(currentSquare, squares) {
     
     else {
         // Check top left and top right adjacent square for enemy piece
-        var enemySquare1Id = "b3";
+        for (var i = 0; i < LETTERS.length; ++i) {
+            if (currentSquare[0] == LETTERS[i]) {
+                var letterIndex = i;
+                break;
+            }
+        }
+        var enemySquare1Id = LETTERS[letterIndex-1] + "3";
         var enemySquare1 = document.getElementById(enemySquare1Id);
-        if (enemySquare1 != null) {
+        if (enemySquare1.children.length != 0) {
             if (enemySquare1.id[0] == "7" || enemySquare1.id[0] == "8") {
                 squares.push(enemySquare1Id);
             }
         }
-        var enemySquare2Id = "g3";
+        var enemySquare2Id = LETTERS[letterIndex+1] + "3";
         var enemySquare2 = document.getElementById(enemySquare2Id);
-        if (enemySquare2 != null) {
+        if (enemySquare2.children.length != 0) {
             if (enemySquare2.id[0] == "7" || enemySquare2.id[0] == "8") {
                 squares.push(enemySquare2Id);
             }
@@ -140,7 +152,7 @@ function possibleSquaresPawnMove1(currentSquare, squares) {
     // If theres an ally piece 1 square in front of the pawn
     var square1AheadId = currentSquare[0] + "3";
     var square1Ahead = document.getElementById(square1AheadId);
-    if (square1Ahead != null) {
+    if (square1Ahead.children.length != 0) {
         if (square1Ahead.id[0] == "1" || square1Ahead.id[0] == "2") {
             return;
         }
@@ -149,7 +161,7 @@ function possibleSquaresPawnMove1(currentSquare, squares) {
     // If theres an ally piece 2 squares in front of the pawn
     var square2AheadId = currentSquare[0] + "4";
     var square2Ahead = document.getElementById(square2AheadId);
-    if (square2Ahead != null) {
+    if (square2Ahead.children.length != 0) {
         if (square2Ahead.id[0] == "1" || square2Ahead.id[0] == "2") {
             squares.push(square1AheadId);
             return;
@@ -169,7 +181,7 @@ function possibleSquaresPawnNextMoves(currentSquare, squares) {
         // Just check top right adjacent square for enemy piece
         var enemySquare1Id = "b" + (parseInt(currentSquare[1], 10) + 1).toString();
         var enemySquare1 = document.getElementById(enemySquare1Id);
-        if (enemySquare1 != null) {
+        if (enemySquare1.children.length != 0) {
             if (enemySquare1.id[0] == "7" || enemySquare1.id[0] == "8") {
                 squares.push(enemySquare1Id);
             }
@@ -181,7 +193,7 @@ function possibleSquaresPawnNextMoves(currentSquare, squares) {
         // Just check top right adjacent square for enemy piece
         var enemySquare1Id = "g" + (parseInt(currentSquare[1], 10) + 1).toString();
         var enemySquare1 = document.getElementById(enemySquare1Id);
-        if (enemySquare1 != null) {
+        if (enemySquare1.children.length != 0) {
             if (enemySquare1.id[0] == "7" || enemySquare1.id[0] == "8") {
                 squares.push(enemySquare1Id);
             }
@@ -190,16 +202,22 @@ function possibleSquaresPawnNextMoves(currentSquare, squares) {
 
     else {
         // Check top left and top right adjacent square for enemy piece
-        var enemySquare1Id = "b" + (parseInt(currentSquare[1], 10) + 1).toString();
+        for (var i = 0; i < LETTERS.length; ++i) {
+            if (currentSquare[0] == LETTERS[i]) {
+                var letterIndex = i;
+                break;
+            }
+        }
+        var enemySquare1Id = LETTERS[letterIndex-1] + (parseInt(currentSquare[1], 10) + 1).toString();
         var enemySquare1 = document.getElementById(enemySquare1Id);
-        if (enemySquare1 != null) {
+        if (enemySquare1.children.length != 0) {
             if (enemySquare1.id[0] == "7" || enemySquare1.id[0] == "8") {
                 squares.push(enemySquare1Id);
             }
         }
-        var enemySquare2Id = "g" + (parseInt(currentSquare[1], 10) + 1).toString();
+        var enemySquare2Id = LETTERS[letterIndex+1] + (parseInt(currentSquare[1], 10) + 1).toString();
         var enemySquare2 = document.getElementById(enemySquare2Id);
-        if (enemySquare2 != null) {
+        if (enemySquare2.children.length != 0) {
             if (enemySquare2.id[0] == "7" || enemySquare2.id[0] == "8") {
                 squares.push(enemySquare2Id);
             }
@@ -209,7 +227,7 @@ function possibleSquaresPawnNextMoves(currentSquare, squares) {
     // If theres an ally piece 1 square in front of the pawn
     var square1AheadId = currentSquare[0] + (parseInt(currentSquare[1], 10) + 1).toString();
     var square1Ahead = document.getElementById(square1AheadId);
-    if (square1Ahead != null) {
+    if (square1Ahead.children.length != 0) {
         if (square1Ahead.id[0] == "1" || square1Ahead.id[0] == "2") {
             return;
         }
@@ -221,7 +239,7 @@ function possibleSquaresPawnNextMoves(currentSquare, squares) {
 }
 
 function possibleSquaresRook(currentSquare, squares) {
-    // Loop through 
+    // Get the...
 }
 
 function possibleSquaresKnight(currentSquare, squares) {
@@ -239,6 +257,57 @@ function possibleSquaresKing(currentSquare, squares) {
 function possibleSquaresQueen(currentSquare, squares) {
 
 }
+function validSquare(id, squares) {
+    for (var i = 0; i < squares.length; ++i) {
+        if (id == squares[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+/*
+Function to move a piece
+oldImage = original image element
+currDiv = original div element
+target = e.target for the event listener (the empty target div)
+squares = possible square to move to
+*/
+function movePiece(oldImage, currDiv, target, squares) {
+    // append the image to the new square
+    var newImage = document.createElement("IMG");
+    newImage.className = "piece";
+    newImage.id = oldImage.id;
+    newImage.src = oldImage.src;
+    target.appendChild(newImage);
+
+    // remove image from old square
+    console.log(currDiv);
+    currDiv.removeChild(oldImage);
+
+    // de-highlight old square
+    if (currDiv.className[12] == "l") {  // Light color
+        document.getElementById(currDiv.id).style.backgroundColor = "rgb(255, 255, 255)";
+    }
+    else if (currDiv.className[12] == "d") {  // Dark color
+        document.getElementById(currDiv.id).style.backgroundColor = "rgb(124, 0, 0)";
+    }
+
+    piecePlaced = true;
+
+    // Reset squares
+    for (var i = 0; i < squares.length + 1; ++i) {
+        squares.pop();
+    }
+}
+/*
+function to move a piece
+arg1 = list of possible square id's obtained from one of the possible squares functions
+arg2 = destination square for the piece to move
+arg3 = originating square
+
+function movePiece(squares, destSquare, origSquare) {
+
+}*/
 
 // This route is to have 64 functions, 1 for each piece
 // Delete this once you know for sure that the next route is the correct way to do it
@@ -256,6 +325,7 @@ document.addEventListener('click', function(e) {
 
     // If there is a piece selected
     if (pieceSelected) {
+        var currentDiv = document.getElementById(currentDivId[0]);
         
         // If the click is on a piece
         if(e.target.className == "piece") {
@@ -286,27 +356,39 @@ document.addEventListener('click', function(e) {
 
         // Else if the click is on an empty square
         if (e.target.className[0] == "s") {
+
             // Check if its a valid square
-
-            piecePlaced = true;
+            var valid = validSquare(e.target.id, possibleSquares);
+            if (valid) {
+                var currentDiv = document.getElementById(currentDivId);
+                movePiece(imageToMove, currentDiv, e.target, possibleSquares);
+            }
         }
-
     }
 
+    // Else if the user selects a piece
     else {
         // Change the color of the div element it's in to a highlighted yellow color
-        var divId = e.target.parentNode.id;
-        console.log(divId);
-        document.getElementById(divId).style.backgroundColor = "rgb(255, 255, 0)";
+        currentDivId = e.target.parentNode.id;
+        var currentDiv = document.getElementById(currentDivId);
+        currentDiv.style.backgroundColor = "rgb(255, 255, 0)";
+
         pieceSelected = true;
 
+        // Assign imagetomove properties to those of the current piece
+        imageToMoveSrc = e.target.src;
+        imageToMoveId = e.target.id;
+        imageToMove = document.getElementById(imageToMoveId);
+
         // Obtain the possible squares to move to depending on the type of piece clicked
-        var pieceId = e.target.id;
+        pieceId = e.target.id;
         var pieceRow = pieceId[0];
         var shortenedId = pieceId.slice(1, 3);
         if (shortenedId == "pa" && pieceRow == "2") {
-            possibleSquaresPawnMove1(divId, possibleSquares);
+            possibleSquaresPawnMove1(currentDiv.id, possibleSquares);
         }
+        currentDiv = document.getElementById(currentDivId);
+        console.log("first click, current div is " + currentDiv);
         /*if (shortenedId == "pa" && pieceRow != "2") {
             possibleSquaresPawnNextMoves(divId, possibleSquares);
         }
