@@ -87,10 +87,14 @@ var imageToMoveSrc;
 var pieceId;
 var currentDivId;
 const LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+var status = '';
+var playerTurn = 'w';  // Player with white pieces starts first
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // Prompt user to new game
 
-
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 /*
 Functions to obtain possible pieces to move
 arg1 = string thats the coordinate of the piece (id of the div)
@@ -174,6 +178,8 @@ function possibleSquaresPawnMove1(currentSquare, squares) {
     }
 }
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ // 
+
 function possibleSquaresPawnNextMoves(currentSquare, squares) {
     
     // If the pawn is on the left side
@@ -201,6 +207,7 @@ function possibleSquaresPawnNextMoves(currentSquare, squares) {
     }
 
     else {
+
         // Check top left and top right adjacent square for enemy piece
         for (var i = 0; i < LETTERS.length; ++i) {
             if (currentSquare[0] == LETTERS[i]) {
@@ -238,25 +245,60 @@ function possibleSquaresPawnNextMoves(currentSquare, squares) {
     }
 }
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 function possibleSquaresRook(currentSquare, squares) {
-    // Get the...
+
+    // Loop through the vertical
+    for (var i = parseInt(currentSquare[1], 10); i <= 8; ++i) {
+        var nextSquareId = currentSquare[0] + i.toString();
+
+        // If the square has the piece to be moved, continue
+        if (nextSquareId == currentSquare) {
+            continue;
+        }
+
+        // If there is an ally piece at this square, break
+        var nextSquare = document.getElementById(nextSquareId);
+        if (nextSquare.children.length != 0) {
+            break;
+        }
+
+        squares.push(nextSquareId);
+        // If there is an enemy piece at this square, break
+        if (n)
+    }
+    // Loop through the horizontal
+    for (var i = )
+
 }
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 function possibleSquaresKnight(currentSquare, squares) {
 
 }
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 function possibleSquaresBishop(currentSquare, squares) {
 
 }
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 function possibleSquaresKing(currentSquare, squares) {
 
 }
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 function possibleSquaresQueen(currentSquare, squares) {
 
 }
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 function validSquare(id, squares) {
     for (var i = 0; i < squares.length; ++i) {
         if (id == squares[i]) {
@@ -265,6 +307,8 @@ function validSquare(id, squares) {
     }
     return false;
 }
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 /*
 Function to move a piece
 oldImage = original image element
@@ -299,36 +343,75 @@ function movePiece(oldImage, currDiv, target, squares) {
         squares.pop();
     }
 }
-/*
-function to move a piece
-arg1 = list of possible square id's obtained from one of the possible squares functions
-arg2 = destination square for the piece to move
-arg3 = originating square
 
-function movePiece(squares, destSquare, origSquare) {
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// Change the player turn
+function changeTurn(p) {
+    if (p === 'w') {
+        return 'b';
+    }
+    else {
+        return 'w';
+    }
+}
 
-}*/
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// Update status of the game
+function giveStatus(placedPieceId) {
+    var status = '';
+    var curColor = 'White';
+    if (playerTurn === 'b') {
+        curColor = 'Black';
+    }
 
-// This route is to have 64 functions, 1 for each piece
-// Delete this once you know for sure that the next route is the correct way to do it
-/*r2pawn1.onclick = function() {
-    // Change the color of the div element it's in to a highlighted color rgb(255, 255, 0)
-    var divId = this.parentNode.id;
-    document.getElementById(divId).style.backgroundColor = "rgb(255, 255, 0)";
+    if (inCheckmate(placedPieceId) === true) {
+		status = 'Game over, ' + curColor + ' is in checkmate.';
+	}
+	else if (game.inDraw(placedPieceId) === true) {
+		status = 'Game over, drawn position';
+	}
+  	else {
+	    status = curColor + ' to move';
+	    // check?
+	    if (game.inCheck(placedPieceId) === true) {
+	      status += ', ' + curColor + ' is in check';
+	    }
+	}
+	return status;
+}
 
-    // More functionality to highlight possible squares to move to
-}*/
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+function inCheckmate(placedPieceId) {
+
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+function inDraw(placedPieceId) {
+
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+function inCheck(placedPieceId) {
+
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // This route is to have 1 function that checks what element was clicked and then proceed accordingly
 // Event listener function for when the user clicks an element on the board
 document.addEventListener('click', function(e) {
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
     // If there is a piece selected
     if (pieceSelected) {
         var currentDiv = document.getElementById(currentDivId[0]);
         
         // If the click is on a piece
-        if(e.target.className == "piece") {
+        if (e.target.className == "piece") {
             var divId = e.target.parentNode.id;
             var divBGColor = document.getElementById(divId).style.backgroundColor;
 
@@ -361,10 +444,14 @@ document.addEventListener('click', function(e) {
             var valid = validSquare(e.target.id, possibleSquares);
             if (valid) {
                 var currentDiv = document.getElementById(currentDivId);
+
+                // Move the piece
                 movePiece(imageToMove, currentDiv, e.target, possibleSquares);
             }
         }
     }
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
     // Else if the user selects a piece
     else {
@@ -381,10 +468,9 @@ document.addEventListener('click', function(e) {
         imageToMove = document.getElementById(imageToMoveId);
 
         // Obtain the possible squares to move to depending on the type of piece clicked
-        pieceId = e.target.id;
-        var pieceRow = pieceId[0];
-        var shortenedId = pieceId.slice(1, 3);
-        if (shortenedId == "pa" && pieceRow == "2") {
+        var pieceRow = imageToMoveId[0];
+        var shortenedId = imageToMoveId.slice(1, 3);
+        if (shortenedId == "pa" && pieceRow == "2") {  // Pawn
             possibleSquaresPawnMove1(currentDiv.id, possibleSquares);
         }
         currentDiv = document.getElementById(currentDivId);
@@ -409,11 +495,6 @@ document.addEventListener('click', function(e) {
         }*/
     }
 })
-
-// Function to check if the square is valid for a move
-/*function validSquare (square) {
-    return isString(square) && square.search(/^[a-h][1-8]$/) !== -1
-}
 
 
 

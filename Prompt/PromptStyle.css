@@ -3,3 +3,73 @@ body {
     margin: 0 auto;
     background-size: 100% 100%;
 }
+
+#titlediv {
+    height: 100px;
+}
+
+@keyframes titleAnimation {
+    from { margin-left: 23%; 
+           color: rgb(102, 51, 0); }
+    to { margin-left: 27%;
+         color: rgb(255, 204, 128); }
+}
+
+#title {
+    font: 60px American Typewriter, serif;
+    line-height: 80px;
+    color: rgb(217, 217, 217);
+    animation: titleAnimation;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#formdiv {
+    height: 310px;
+    width: 320px;
+    margin: auto;
+    border-radius: 40px;
+    border: 7px solid rgb(77, 77, 77);
+    background-color:rgb(153, 153, 153);
+    opacity: 0.7;
+    margin-top: 4%;
+}
+
+#button1 {
+    margin-top: 11%;
+    height: 100px;
+    width: 160px;
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(0, 179, 60);
+    color: rgb(0,0,0);
+    font: bold 30px American Typewriter, serif;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+#button2 {
+    margin-top: 11%;
+    height: 100px;
+    width: 160px;
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(0, 179, 60);
+    color: rgb(0,0,0);
+    font: bold 30px American Typewriter, serif;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+#button1:hover, #button2:hover {
+    background-color: rgb(0, 128, 43)
+}
+
+#button1:active, #button2:active {
+    background-color: white;
+}
